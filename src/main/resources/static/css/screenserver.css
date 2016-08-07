@@ -1,0 +1,4 @@
+table td {
+    word-wrap:break-word;
+    text-overflow: elipsis;
+}

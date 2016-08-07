@@ -32,13 +32,19 @@ public class Application {
         return new SpringBus();
     }
 
+
+    @Bean
+    public StatusService statusService() {
+        return new StatusService();
+    }
+
     @Bean
     public Server rsServer() {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(springBus());
         endpoint.setAddress("/");
 
-        endpoint.setServiceBeans(Arrays.asList(new StatusService(), new CrashService()));
+        endpoint.setServiceBeans(Arrays.asList(statusService(), new CrashService()));
         endpoint.setProviders(Arrays.asList(new JacksonJsonProvider()));
         return endpoint.create();
     }
