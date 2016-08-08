@@ -1,5 +1,3 @@
 language: java
-jdk:
-  - oraclejdk8
-install: mvn -P'!apple_dnssd' install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-script: mvn -P'!apple_dnssd' clean verify
+os:
+  - osx
