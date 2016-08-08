@@ -1,7 +1,7 @@
 package net.strocamp.wbf.screenserver.rest;
 
 import net.strocamp.wbf.screenserver.dao.ScreensDao;
-import net.strocamp.wbf.screenserver.domain.ScreenDetails;
+import net.strocamp.wbf.screenserver.domain.DeviceDetails;
 import net.strocamp.wbf.screenserver.domain.Status;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,11 +29,12 @@ public class StatusService {
         String remoteAddr = req.getRemoteAddr();
         log.info("Received update from " + status.getDeviceId() + " at " + remoteAddr);
 
-        ScreenDetails details = new ScreenDetails();
+        DeviceDetails details = new DeviceDetails();
         details.setDeviceId(status.getDeviceId());
         details.setIpAddress(remoteAddr);
         details.setLastSeen(new Date());
         details.setCurrentUrl(status.getCurrentUrl());
+        details.setScreenDetails(status.getScreenDetails());
 
         screensDao.storeScreen(details);
 
@@ -41,7 +42,7 @@ public class StatusService {
     }
 
     @GET
-    public List<ScreenDetails> overview() {
+    public List<DeviceDetails> overview() {
         return screensDao.listScreens();
     }
 }

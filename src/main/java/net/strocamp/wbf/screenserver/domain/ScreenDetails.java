@@ -1,51 +1,40 @@
 package net.strocamp.wbf.screenserver.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import net.strocamp.wbf.screenserver.CustomDateConverter;
-
-import java.util.Date;
-
 public class ScreenDetails {
-    @JsonProperty("device_id")
-    private String deviceId;
-    @JsonProperty("ip_address")
-    private String ipAddress;
-    @JsonProperty("last_seen")
-    @JsonSerialize(using=CustomDateConverter.class)
-    private Date lastSeen;
-    @JsonProperty("current_url")
-    private String currentUrl;
+    private int heigth;
+    private int width;
+    private float xdpi;
+    private float ydpi;
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public int getHeigth() {
+        return heigth;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public void setHeigth(int heigth) {
+        this.heigth = heigth;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public int getWidth() {
+        return width;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public Date getLastSeen() {
-        return lastSeen;
+    public float getXdpi() {
+        return xdpi;
     }
 
-    public void setLastSeen(Date lastSeen) {
-        this.lastSeen = lastSeen;
+    public void setXdpi(float xdpi) {
+        this.xdpi = xdpi;
     }
 
-    public String getCurrentUrl() {
-        return currentUrl;
+    public float getYdpi() {
+        return ydpi;
     }
 
-    public void setCurrentUrl(String currentUrl) {
-        this.currentUrl = currentUrl;
+    public void setYdpi(float ydpi) {
+        this.ydpi = ydpi;
     }
 }

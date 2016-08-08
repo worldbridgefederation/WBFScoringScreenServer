@@ -7,10 +7,26 @@ function periodicScreenTableUpdate() {
         location.origin = location.protocol + '//' + location.host;
     $.ajax({
         url: location.origin + "/rest-api/screens"
-    }).then(function(data) {
-        updateScreensTable(data);
-        setTimeout(periodicScreenTableUpdate, 5000);
+    }).then(function(data, textStatus, jqXHR) {
+        updateScreensTable(data)
+        setTimeout(periodicScreenTableUpdate, 5000)
+    }, function(jqXHR, textStatus, errorThrown) {
+        setMessage(errorThrown)
+        setTimeout(periodicScreenTableUpdate, 60000)
     });
+}
+
+function setError(message) {
+    $('#screenTable tbody').empty();
+    $('#screenTable tbody')
+                .append($('<tr>')
+                    .append($('<td>')
+                    )
+                    .append($('<td class=".error">')
+                        .attr("colspan","3")
+                        .text(message)
+                    )
+                );
 }
 
 function updateScreensTable(data) {
@@ -22,6 +38,11 @@ function updateScreensTable(data) {
             var url = value.current_url
             if (cutOffIndex > 0 ) {
                 url = value.current_url.substring(0, cutOffIndex)
+            }
+
+            var resolution = "<unknown>"
+            if (value.screen_details != null) {
+                resolution = value.screen_details.width + "x" + value.screen_details.heigth
             }
 
             $('#screenTable tbody')
@@ -37,6 +58,14 @@ function updateScreensTable(data) {
                     )
                     .append($('<td>')
                         .text(value.last_seen)
+                    )
+                )
+                .append($('<tr>')
+                    .append($('<td>')
+                    )
+                    .append($('<td class=".screenurl">')
+                        .attr("colspan","3")
+                        .text(resolution)
                     )
                 )
                 .append($('<tr>')

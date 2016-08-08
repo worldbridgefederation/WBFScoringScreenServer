@@ -1,11 +1,11 @@
 package net.strocamp.wbf.screenserver.dao;
 
-import net.strocamp.wbf.screenserver.domain.ScreenDetails;
+import net.strocamp.wbf.screenserver.domain.DeviceDetails;
 
 import java.util.List;
 
 public interface ScreensDao {
-    List<ScreenDetails> listScreens();
+    List<DeviceDetails> listScreens();
 
-    void storeScreen(ScreenDetails screenDetails);
+    void storeScreen(DeviceDetails deviceDetails);
 }
