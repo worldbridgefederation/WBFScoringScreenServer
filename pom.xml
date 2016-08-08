@@ -51,15 +51,6 @@
             <version>2.8.1</version>
         </dependency>
 
-        <!-- Apple DNSSD -->
-        <dependency>
-            <groupId>com.apple.dnssd</groupId>
-            <artifactId>DNSSD</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${dnssd.library}</systemPath>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -76,5 +67,27 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>apple_dnssd</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <dnssd.library>/System/Library/Java/Extensions/dns_sd.jar</dnssd.library>
+            </properties>
+            <dependencies>
+                <!-- Apple DNSSD -->
+                <dependency>
+                    <groupId>com.apple.dnssd</groupId>
+                    <artifactId>DNSSD</artifactId>
+                    <version>LATEST</version>
+                    <scope>system</scope>
+                    <systemPath>${dnssd.library}</systemPath>
+                </dependency>
+            </dependencies>
+
+        </profile>
+    </profiles>
 
 </project>
