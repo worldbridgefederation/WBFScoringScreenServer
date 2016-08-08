@@ -1,6 +1,6 @@
-package net.strocamp.wbf.screenserver.dao;
+package org.worldbridge.development.screenserver.dao;
 
-import net.strocamp.wbf.screenserver.domain.DeviceDetails;
+import org.worldbridge.development.screenserver.domain.DeviceDetails;
 
 import java.util.List;
 

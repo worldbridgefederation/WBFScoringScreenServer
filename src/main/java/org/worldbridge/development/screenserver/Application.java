@@ -1,8 +1,8 @@
-package net.strocamp.wbf.screenserver;
+package org.worldbridge.development.screenserver;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import net.strocamp.wbf.screenserver.rest.CrashService;
-import net.strocamp.wbf.screenserver.rest.StatusService;
+import org.worldbridge.development.screenserver.rest.CrashService;
+import org.worldbridge.development.screenserver.rest.StatusService;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.endpoint.Server;

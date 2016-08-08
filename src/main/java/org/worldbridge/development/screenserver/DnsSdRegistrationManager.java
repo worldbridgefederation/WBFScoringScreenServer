@@ -1,4 +1,4 @@
-package net.strocamp.wbf.screenserver;
+package org.worldbridge.development.screenserver;
 
 import com.apple.dnssd.*;
 import org.apache.commons.logging.Log;

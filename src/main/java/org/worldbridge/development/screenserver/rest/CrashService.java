@@ -1,4 +1,4 @@
-package net.strocamp.wbf.screenserver.rest;
+package org.worldbridge.development.screenserver.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,4 +1,4 @@
-package net.strocamp.wbf.screenserver.domain;
+package org.worldbridge.development.screenserver.domain;
 
 public class ScreenDetails {
     private int heigth;

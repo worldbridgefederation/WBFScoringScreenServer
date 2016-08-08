@@ -1,8 +1,8 @@
-package net.strocamp.wbf.screenserver.rest;
+package org.worldbridge.development.screenserver.rest;
 
-import net.strocamp.wbf.screenserver.dao.ScreensDao;
-import net.strocamp.wbf.screenserver.domain.DeviceDetails;
-import net.strocamp.wbf.screenserver.domain.Status;
+import org.worldbridge.development.screenserver.dao.ScreensDao;
+import org.worldbridge.development.screenserver.domain.DeviceDetails;
+import org.worldbridge.development.screenserver.domain.Status;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
