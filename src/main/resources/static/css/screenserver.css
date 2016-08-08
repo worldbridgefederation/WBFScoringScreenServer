@@ -2,3 +2,17 @@ table td {
     word-wrap:break-word;
     text-overflow: elipsis;
 }
+
+.screen {
+    background: url(../images/tv.png);
+    background-size: 196px 139px;
+    background-repeat: no-repeat;
+    width: 196px;
+    height: 139px;
+    padding: 7px 7px 18px 7px
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.screenrow {
+}

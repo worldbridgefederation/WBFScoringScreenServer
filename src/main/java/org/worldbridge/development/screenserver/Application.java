@@ -2,6 +2,7 @@ package org.worldbridge.development.screenserver;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.worldbridge.development.screenserver.rest.CrashService;
+import org.worldbridge.development.screenserver.rest.ScreenGroupService;
 import org.worldbridge.development.screenserver.rest.StatusService;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
@@ -39,12 +40,17 @@ public class Application {
     }
 
     @Bean
+    public ScreenGroupService screenGroupService() {
+        return new ScreenGroupService();
+    }
+
+    @Bean
     public Server rsServer() {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(springBus());
         endpoint.setAddress("/");
 
-        endpoint.setServiceBeans(Arrays.asList(statusService(), new CrashService()));
+        endpoint.setServiceBeans(Arrays.asList(statusService(), screenGroupService(), new CrashService()));
         endpoint.setProviders(Arrays.asList(new JacksonJsonProvider()));
         return endpoint.create();
     }

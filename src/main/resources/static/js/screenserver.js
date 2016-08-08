@@ -76,7 +76,45 @@ function updateScreensTable(data) {
                         .text(url)
                     )
                 );
-
         })
 }
+
+function loadScreenGroups() {
+    if (typeof location.origin === 'undefined')
+        location.origin = location.protocol + '//' + location.host;
+    $.ajax({
+        url: location.origin + "/rest-api/screengroups"
+    }).then(function(data, textStatus, jqXHR) {
+        updateScreenGroups(data)
+    })
+}
+
+function updateScreenGroups(data) {
+    $('#screencontainer').empty();
+    jQuery.each(data, function(index, value) {
+        var screendiv = $('<div>')
+            .attr('class','row screenrow')
+        jQuery.each(value.deviceIds, function(index, screenvalue) {
+            var screen = $("<div>")
+                .attr('class','col-md-1 screen')
+                .append($("<p>")
+                    .text(screenvalue)
+                )
+            screendiv.append(screen)
+        })
+         $('#screencontainer')
+            .append($('<div>')
+                .attr('class','row')
+                .append($('<div>')
+                    .attr('class','col-md-12')
+                    .append($('<h1>')
+                        .text(value.groupName)
+                    )
+                )
+            )
+            .append(screendiv)
+    })
+}
+
+
 
