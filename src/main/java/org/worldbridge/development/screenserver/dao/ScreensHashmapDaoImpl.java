@@ -1,5 +1,6 @@
 package org.worldbridge.development.screenserver.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.worldbridge.development.screenserver.domain.DeviceDetails;
 import org.springframework.stereotype.Component;
 

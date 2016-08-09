@@ -1,12 +1,14 @@
 package org.worldbridge.development.screenserver.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.worldbridge.development.screenserver.dao.ScreenGroupDao;
+import org.worldbridge.development.screenserver.domain.DeviceDetails;
 import org.worldbridge.development.screenserver.domain.ScreenGroup;
+import org.worldbridge.development.screenserver.persistance.ScreenGroupEntity;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.*;
 
 @Path("/screengroups")
@@ -14,25 +16,34 @@ import java.util.*;
 @Produces(MediaType.APPLICATION_JSON)
 public class ScreenGroupService {
 
+    @Autowired
+    private ScreenGroupDao screenGroupDao;
+
     @GET
     public List<ScreenGroup> list() {
-        List<ScreenGroup> result = new ArrayList<>();
-        ScreenGroup a = new ScreenGroup();
-        a.setGroupName("Presidents Office");
-        a.setDeviceIds(Collections.singletonList("2806cc5d978bdd91"));
+        return screenGroupDao.listScreenGroups();
+    }
 
-        ScreenGroup b = new ScreenGroup();
-        b.setGroupName("Player Lobby");
-        List<String> devices = new ArrayList<>();
-        devices.add("e102fbfcb9136cbb");
-        devices.add("fbfeafc76a116a91");
-        devices.add("f2cb8761455e94c5");
-        devices.add("afb6c78f56d277fe");
-        b.setDeviceIds(devices);
+    @PUT
+    public Response addScreenGroup(ScreenGroup screenGroup) {
+        screenGroupDao.createScreenGroup(screenGroup.getGroupName());
 
-        result.add(a);
-        result.add(b);
+        return Response.accepted().build();
+    }
 
-        return result;
+    @PUT
+    @Path("{groupName}/devices")
+    public Response addDeviceToGroup(@PathParam("groupName") String groupName, DeviceDetails deviceDetails) {
+        screenGroupDao.addScreenToScreenGroup(groupName, deviceDetails.getDeviceId());
+
+        return Response.accepted().build();
+    }
+
+    @DELETE
+    @Path("{groupName/devices")
+    public Response removeDeviceFromGroup(@PathParam("groupName") String groupName, DeviceDetails deviceDetails) {
+        screenGroupDao.removeScreenFromScreenGroup(groupName, deviceDetails.getDeviceId());
+
+        return Response.accepted().build();
     }
 }

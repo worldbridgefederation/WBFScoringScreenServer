@@ -1,7 +1,10 @@
 package org.worldbridge.development.screenserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScreenGroup {
     private String groupName;
     private List<String> deviceIds;

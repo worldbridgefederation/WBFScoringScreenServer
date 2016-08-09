@@ -1,11 +1,13 @@
 package org.worldbridge.development.screenserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.worldbridge.development.screenserver.CustomDateConverter;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DeviceDetails {
     @JsonProperty("device_id")
     private String deviceId;

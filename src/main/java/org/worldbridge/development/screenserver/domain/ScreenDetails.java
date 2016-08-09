@@ -1,5 +1,8 @@
 package org.worldbridge.development.screenserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScreenDetails {
     private int heigth;
     private int width;

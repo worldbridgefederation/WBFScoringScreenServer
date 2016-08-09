@@ -1,6 +1,11 @@
 package org.worldbridge.development.screenserver;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import org.worldbridge.development.screenserver.hsqldb.HyperSqlDbServer;
 import org.worldbridge.development.screenserver.rest.CrashService;
 import org.worldbridge.development.screenserver.rest.ScreenGroupService;
 import org.worldbridge.development.screenserver.rest.StatusService;
@@ -14,6 +19,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -54,5 +60,4 @@ public class Application {
         endpoint.setProviders(Arrays.asList(new JacksonJsonProvider()));
         return endpoint.create();
     }
-
 }

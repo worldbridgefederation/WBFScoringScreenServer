@@ -40,70 +40,65 @@
                 <li class="active"><a href="#">Groups</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
+              <form class="navbar-form navbar-right">
+                  <div class="checkbox">
+                      <label>
+                          <input class="global-edit" type="checkbox"> Edit enabled
+                      </label>
+                  </div>
+              </form>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
 
         <div id="screencontainer">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Unassigned Screens</h1>
+        </div>
+
+        <!-- popup screen for adding a group -->
+        <div id="addGroupModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Add Screen Group</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Enter the name for the group</p>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Name</span>
+                            <input type="text" class="form-control group-name-input" placeholder="Group Name" aria-describedby="basic-addon1">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary save-button">Save</button>
+                    </div>
                 </div>
             </div>
-            <div class="row screenrow">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-1 screen">
-                    <p>screen1</p>
-                </div>
-                <div class="col-md-1 screen">
-                    <p>screen2</p>
-                </div>
-                <div class="col-md-1 screen">
-                    <p>screen3</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen4</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen5</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen6</p>
-                </div>
-                <div classs="col-md-1">
-                    <p>empty</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Group name 2</h1>
-                </div>
-            </div>
-            <div class="row screenrow">
-                <div class="col-md-1">
-                    <p>groupname</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen1</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen2</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen3</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen4</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen5</p>
-                </div>
-                <div class="col-md-1">
-                    <p>screen6</p>
-                </div>
-                <div classs="col-md-1">
-                    <p>empty</p>
+        </div>
+
+        <!-- popup screen for adding a screen to a group -->
+        <div id="addScreenModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Add Screen</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Select the unassigned screen to add</p>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2">Name</span>
+                            <select class="form-control unassignedid" id="unassigned-select" aria-describedby="basic-addon2">
+                                <option>--</option>
+                            </select>
+                        </div>
+                        <input type="hidden" class="target-group" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary save-button">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,7 +113,60 @@
     <script src="js/screenserver.js"></script>
     <script>
     $( document ).ready(function() {
-        loadScreenGroups();
+        // Used by the drop down
+        var unassignedScreens = []
+
+        periodicScreenGroupsUpdate();
+
+        $("body").on("click", ".global-edit", null, function (event) {
+            console.log ( 'click received on edit button' );
+            loadScreenGroups();
+        })
+
+        $('#addGroupModal .save-button').click(function() {
+            $('#addGroupModal').modal('hide');
+            if (typeof location.origin === 'undefined')
+                location.origin = location.protocol + '//' + location.host;
+            var groupname = $('#addGroupModal .group-name-input').val()
+            if (groupname == null || groupname == "") {
+                alert("Invalid input");
+                return
+            }
+            $.ajax({
+                type: "PUT",
+                url: location.origin + "/rest-api/screengroups",
+                contentType: "application/json",
+                data: '{"groupName": "' + groupname + '"}'
+            }).then(function() {
+                loadScreenGroups();
+            }, function() {
+                alert("Save failed...");
+            });
+        });
+
+        $('#addScreenModal .save-button').click(function() {
+            $('#addScreenModal').modal('hide');
+            if (typeof location.origin === 'undefined')
+                location.origin = location.protocol + '//' + location.host;
+            groupName = $('#addScreenModal .target-group').val()
+            deviceId = $('#addScreenModal .unassignedid option:selected').text()
+
+            if (groupName == null || groupName == "") {
+                alert("Invalid input");
+                return
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: location.origin + "/rest-api/screengroups/" + groupName + "/devices",
+                contentType: "application/json",
+                data: '{ "device_id" : "' + deviceId + '" }'
+            }).then(function() {
+                loadScreenGroups();
+            }, function() {
+                alert("Save failed...");
+            });
+        });
     });
     </script>
   </body>

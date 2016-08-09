@@ -9,9 +9,23 @@ table td {
     background-repeat: no-repeat;
     width: 196px;
     height: 139px;
-    padding: 7px 7px 18px 7px
+    padding: 7px 7px 24px 7px;
     margin-left: 2px;
     margin-right: 2px;
+}
+
+.screen-inside {
+    height: 100%;
+    width: 100%;
+    padding: 3px 3px 3px 3px;
+}
+
+.warning {
+    background-color: orange;
+}
+
+.critical {
+    background-color: red;
 }
 
 .screenrow {
