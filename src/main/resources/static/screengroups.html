@@ -149,7 +149,7 @@
             if (typeof location.origin === 'undefined')
                 location.origin = location.protocol + '//' + location.host;
             groupName = $('#addScreenModal .target-group').val()
-            deviceId = $('#addScreenModal .unassignedid option:selected').text()
+            deviceId = $('#addScreenModal .unassignedid option:selected').val()
 
             if (groupName == null || groupName == "") {
                 alert("Invalid input");

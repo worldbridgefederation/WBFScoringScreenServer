@@ -65,6 +65,7 @@ function updateScreensTable(data) {
                 .append($('<tr>')
                     .append($('<th>')
                         .text(index)
+                        .addClass('status-' + value.device_status)
                     )
                     .append($('<td>')
                         .text(value.device_id)
@@ -74,6 +75,18 @@ function updateScreensTable(data) {
                     )
                     .append($('<td>')
                         .text(value.last_seen)
+                    )
+                )
+                .append($('<tr>')
+                    .append($('<th>'))
+                    .append($('<td>')
+                        .text(value.model + " ( S/N : " + value.serial + ")")
+                    )
+                    .append($('<td>')
+                        .text("Android " + value.version)
+                    )
+                    .append($('<td>')
+                        .text("WBF " + value.app_version)
                     )
                 )
                 .append($('<tr>')
@@ -113,16 +126,36 @@ function updateScreenGroups(data) {
         var screendiv = $('<div>')
             .attr('class','row screenrow')
 
-        jQuery.each(value.deviceIds, function(index, screenvalue) {
+        jQuery.each(value.devices, function(index, screenvalue) {
+            var resolution = "<unknown>"
+            if (screenvalue.screen_details != null) {
+                resolution = screenvalue.screen_details.width + "x" + screenvalue.screen_details.heigth
+            }
             var screen = $("<div>")
                 .attr('class','col-md-1 screen')
                 .append($("<div>")
                     .attr("class", "screen-inside")
+                    .addClass("status-" + screenvalue.device_status)
                     .append($("<p>")
-                        .text(screenvalue)
+                        .text(screenvalue.device_id)
                     )
+                    .append($("<p>")
+                        .text(screenvalue.ip_address)
+                    )
+                    .append($("<p>")
+                        .text(resolution)
+                    )
+                    .append($("<p>")
+                        .text(screenvalue.app_version)
+                    )
+
                 )
             screendiv.append(screen)
+
+            if (value.groupName == "Unassigned") {
+                // Update the global with the list of unassigned screens
+                unassignedScreens = value.devices
+            }
         })
 
         if (editEnabled() && !(value.groupName == "Unassigned") ) {
@@ -134,11 +167,6 @@ function updateScreenGroups(data) {
                                 .attr('aria-hidden','true')
                             )
             screendiv.append(screen)
-        }
-
-        if (value.groupName == "Unassigned") {
-            // Update the global with the list of unassigned screens
-            unassignedScreens = value.deviceIds
         }
 
         $('#screencontainer')
@@ -158,8 +186,8 @@ function updateScreenGroups(data) {
             $('#unassigned-select').empty()
             $.each(unassignedScreens, function(index, value) {
                  $('#unassigned-select')
-                      .append($('<option>', { value : value })
-                      .text(value));
+                      .append($('<option>', { value : value.device_id })
+                      .text(value.device_id + ' / ' + value.ip_address));
                  $('#addScreenModal .target-group')
                         .val(event.target.dataset["group"])
             });

@@ -20,12 +20,20 @@ table td {
     padding: 3px 3px 3px 3px;
 }
 
-.warning {
-    background-color: orange;
+.screen-inside p {
+    margin: 0px 0px 0px 0px
 }
 
-.critical {
-    background-color: red;
+.status-ok {
+    background-color: LightGreen;
+}
+
+.status-warning {
+    background-color: LightGoldenRodYellow  ;
+}
+
+.status-critical {
+    background-color: LightCoral;
 }
 
 .screenrow {

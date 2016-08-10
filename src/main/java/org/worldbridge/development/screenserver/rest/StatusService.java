@@ -2,10 +2,12 @@ package org.worldbridge.development.screenserver.rest;
 
 import org.worldbridge.development.screenserver.dao.ScreensDao;
 import org.worldbridge.development.screenserver.domain.DeviceDetails;
+import org.worldbridge.development.screenserver.domain.HardwareDetails;
 import org.worldbridge.development.screenserver.domain.Status;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.worldbridge.development.screenserver.domain.VersionDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -36,6 +38,19 @@ public class StatusService {
         details.setCurrentUrl(status.getCurrentUrl());
         details.setScreenDetails(status.getScreenDetails());
 
+        if (status.getHardwareDetails() != null) {
+            HardwareDetails hardwareDetails = status.getHardwareDetails();
+            details.setManufacturer(hardwareDetails.getManufacturer());
+            details.setModel(hardwareDetails.getModel());
+            details.setVersion(hardwareDetails.getReleaseVersion());
+            details.setSerial(hardwareDetails.getSerial());
+        }
+
+        if (status.getVersionDetails() != null) {
+            VersionDetails versionDetails = status.getVersionDetails();
+            details.setAppVersion(versionDetails.getVersionName() + " build "+ versionDetails.getVersionId() );
+        }
+
         screensDao.storeScreen(details);
 
         return Response.accepted().build();
@@ -44,5 +59,11 @@ public class StatusService {
     @GET
     public List<DeviceDetails> overview() {
         return screensDao.listScreens();
+    }
+
+    @GET
+    @Path("{androidId}")
+    public DeviceDetails getScreenByAndroidId(@PathParam("androidId") String androidId) {
+        return screensDao.getScreen(androidId);
     }
 }

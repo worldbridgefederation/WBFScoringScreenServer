@@ -7,7 +7,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ScreenGroup {
     private String groupName;
-    private List<String> deviceIds;
+    private List<DeviceDetails> devices;
 
     public String getGroupName() {
         return groupName;
@@ -17,11 +17,11 @@ public class ScreenGroup {
         this.groupName = groupName;
     }
 
-    public List<String> getDeviceIds() {
-        return deviceIds;
+    public List<DeviceDetails> getDevices() {
+        return devices;
     }
 
-    public void setDeviceIds(List<String> deviceIds) {
-        this.deviceIds = deviceIds;
+    public void setDevices(List<DeviceDetails> devices) {
+        this.devices = devices;
     }
 }

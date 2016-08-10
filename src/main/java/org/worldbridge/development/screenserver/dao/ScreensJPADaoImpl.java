@@ -17,24 +17,15 @@ public class ScreensJPADaoImpl implements ScreensDao {
     @Autowired
     private ScreenRepository screenRepository;
 
+    @Autowired
+    private DeviceDetailsConverter deviceDetailsConverter;
+
     @Override
     public List<DeviceDetails> listScreens() {
         Iterable<ScreenEntity> devices = screenRepository.findAll();
         List<DeviceDetails> result = new ArrayList<>();
         for (ScreenEntity device : devices) {
-            DeviceDetails details = new DeviceDetails();
-            details.setDeviceId(device.getAndroidId());
-            details.setIpAddress(device.getIpAddress());
-            details.setCurrentUrl(device.getCurrentUrl());
-            details.setLastSeen(device.getLastSeen());
-
-            ScreenDetails screenDetails = new ScreenDetails();
-            if (device.getResolution() != null) {
-                String[] resolution = device.getResolution().split("x");
-                screenDetails.setWidth(Integer.parseInt(resolution[0]));
-                screenDetails.setHeigth(Integer.parseInt(resolution[1]));
-            }
-            details.setScreenDetails(screenDetails);
+            DeviceDetails details = deviceDetailsConverter.getDeviceDetails(device);
             result.add(details);
         }
         return result;
@@ -42,18 +33,31 @@ public class ScreensJPADaoImpl implements ScreensDao {
 
     @Override
     public void storeScreen(DeviceDetails deviceDetails) {
-        String resolution = null;
-        if (deviceDetails.getScreenDetails() != null) {
-            resolution = Integer.toString(deviceDetails.getScreenDetails().getWidth()) + "x" +
-                    Integer.toString(deviceDetails.getScreenDetails().getHeigth());
+        ScreenEntity screenEntity = screenRepository.findOne(deviceDetails.getDeviceId());
+        if (screenEntity == null) {
+            // New Screen
+            screenEntity = new ScreenEntity(deviceDetails.getDeviceId());
         }
-        ScreenEntity screenEntity = new ScreenEntity(deviceDetails.getDeviceId(),
-                deviceDetails.getIpAddress(),
-                deviceDetails.getLastSeen(),
-                deviceDetails.getCurrentUrl(),
-                resolution,
-                null
-                );
+
+        screenEntity.setCurrentUrl(deviceDetails.getCurrentUrl());
+        screenEntity.setIpAddress(deviceDetails.getIpAddress());
+        screenEntity.setLastSeen(deviceDetails.getLastSeen());
+        screenEntity.setResolution(deviceDetailsConverter.getResolution(deviceDetails));
+
+        screenEntity.setManufacturer(deviceDetails.getManufacturer());
+        screenEntity.setModel(deviceDetails.getModel());
+        screenEntity.setVersion(deviceDetails.getVersion());
+        screenEntity.setSerial(deviceDetails.getSerial());
+        screenEntity.setAppVersion(deviceDetails.getAppVersion());
+
         screenRepository.save(screenEntity);
     }
+
+    @Override
+    public DeviceDetails getScreen(String androidId) {
+        ScreenEntity entity = screenRepository.findOne(androidId);
+        return deviceDetailsConverter.getDeviceDetails(entity);
+    }
+
+
 }

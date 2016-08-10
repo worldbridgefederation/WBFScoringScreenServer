@@ -2,6 +2,7 @@ package org.worldbridge.development.screenserver.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.worldbridge.development.screenserver.domain.DeviceDetails;
 import org.worldbridge.development.screenserver.domain.ScreenGroup;
 import org.worldbridge.development.screenserver.persistance.ScreenEntity;
 import org.worldbridge.development.screenserver.persistance.ScreenGroupEntity;
@@ -21,6 +22,9 @@ public class ScreenGroupJPADaoImpl implements ScreenGroupDao {
     @Autowired
     private ScreenRepository screenRepository;
 
+    @Autowired
+    private DeviceDetailsConverter deviceDetailsConverter;
+
     @Override
     public List<ScreenGroup> listScreenGroups() {
         Iterable<ScreenGroupEntity> entities = screenGroupRepository.findAll();
@@ -29,9 +33,10 @@ public class ScreenGroupJPADaoImpl implements ScreenGroupDao {
         for (ScreenGroupEntity entity : entities) {
             ScreenGroup screenGroup = new ScreenGroup();
             screenGroup.setGroupName(entity.getGroupName());
-            screenGroup.setDeviceIds(new ArrayList<>());
+            screenGroup.setDevices(new ArrayList<>());
             for (ScreenEntity screenEntity : entity.getScreenEntities()) {
-                screenGroup.getDeviceIds().add(screenEntity.getAndroidId());
+                DeviceDetails deviceDetails = deviceDetailsConverter.getDeviceDetails(screenEntity);
+                screenGroup.getDevices().add(deviceDetails);
             }
             groups.add(screenGroup);
         }
@@ -40,9 +45,10 @@ public class ScreenGroupJPADaoImpl implements ScreenGroupDao {
         if (!unassigned.isEmpty()) {
             ScreenGroup screenGroup = new ScreenGroup();
             screenGroup.setGroupName("Unassigned");
-            screenGroup.setDeviceIds(new ArrayList<>());
+            screenGroup.setDevices(new ArrayList<>());
             for (ScreenEntity entity : unassigned) {
-                screenGroup.getDeviceIds().add(entity.getAndroidId());
+                DeviceDetails deviceDetails = deviceDetailsConverter.getDeviceDetails(entity);
+                screenGroup.getDevices().add(deviceDetails);
             }
             groups.add(screenGroup);
         }

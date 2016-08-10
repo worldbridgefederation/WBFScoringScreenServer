@@ -8,4 +8,6 @@ public interface ScreensDao {
     List<DeviceDetails> listScreens();
 
     void storeScreen(DeviceDetails deviceDetails);
+
+    DeviceDetails getScreen(String androidId);
 }
