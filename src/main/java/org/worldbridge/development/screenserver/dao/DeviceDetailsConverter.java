@@ -26,6 +26,7 @@ public class DeviceDetailsConverter {
         details.setModel(device.getModel());
         details.setVersion(device.getVersion());
         details.setAppVersion(device.getAppVersion());
+        details.setSerial(device.getSerial());
 
         details.setDeviceStatus(assessDeviceStatus(device));
 
