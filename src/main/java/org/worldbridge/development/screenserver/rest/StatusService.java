@@ -1,13 +1,11 @@
 package org.worldbridge.development.screenserver.rest;
 
+import org.worldbridge.development.screenserver.dao.NotificationDao;
 import org.worldbridge.development.screenserver.dao.ScreensDao;
-import org.worldbridge.development.screenserver.domain.DeviceDetails;
-import org.worldbridge.development.screenserver.domain.HardwareDetails;
-import org.worldbridge.development.screenserver.domain.Status;
+import org.worldbridge.development.screenserver.domain.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.worldbridge.development.screenserver.domain.VersionDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -26,9 +24,17 @@ public class StatusService {
     @Autowired
     private ScreensDao screensDao;
 
+    @Autowired
+    private NotificationDao notificationDao;
+
     @POST
     public Response status(@Context HttpServletRequest req, Status status) {
         String remoteAddr = req.getRemoteAddr();
+        if (status == null) {
+            log.info("Received update from " + remoteAddr + " with empty status!");
+            return Response.status(500).build();
+        }
+
         log.info("Received update from " + status.getDeviceId() + " at " + remoteAddr);
 
         DeviceDetails details = new DeviceDetails();
@@ -53,7 +59,16 @@ public class StatusService {
 
         screensDao.storeScreen(details);
 
-        return Response.accepted().build();
+        Notification notification = notificationDao.getNotificationForDevice(details.getDeviceId());
+
+        StatusResponse statusResponse = new StatusResponse();
+        if (notification != null) {
+            statusResponse.setShowNotitification(true);
+            statusResponse.setNotification(notification);
+        } else {
+            statusResponse.setShowNotitification(false);
+        }
+        return Response.ok(statusResponse).build();
     }
 
     @GET

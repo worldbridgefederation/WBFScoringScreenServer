@@ -59,5 +59,14 @@ public class ScreensJPADaoImpl implements ScreensDao {
         return deviceDetailsConverter.getDeviceDetails(entity);
     }
 
+    public String getGroupForScreen(String deviceId) {
+        ScreenEntity entity = screenRepository.findOne(deviceId);
+        String groupName = null;
+        if (entity != null) {
+            groupName = entity.getScreenGroup() != null ? entity.getScreenGroup().getGroupName() : null;
+        }
+        return groupName;
+    }
+
 
 }

@@ -54,14 +54,15 @@ public class DeviceDetailsConverter {
         }
 
         // Fotiss not configured screen is warning
-        if (entity.getCurrentUrl().contains("/tourn/scoringsystem/asp/messagedisplay.asp")) {
+        if (entity.getCurrentUrl() != null &&
+                entity.getCurrentUrl().contains("/tourn/scoringsystem/asp/messagedisplay.asp")) {
             if (!statusAssessment.equals("critical")) {
                 statusAssessment = "warning";
             }
         }
 
         // Any error in the url is critical
-        if (entity.getCurrentUrl().toLowerCase().contains("error")) {
+        if (entity.getCurrentUrl() != null && entity.getCurrentUrl().toLowerCase().contains("error")) {
             statusAssessment = "critical";
         }
         return statusAssessment;
