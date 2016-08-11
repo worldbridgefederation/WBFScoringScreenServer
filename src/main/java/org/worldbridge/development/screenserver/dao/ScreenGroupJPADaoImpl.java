@@ -63,21 +63,35 @@ public class ScreenGroupJPADaoImpl implements ScreenGroupDao {
     }
 
     @Override
-    public void addScreenToScreenGroup(String groupName, String screenId) {
+    public void addScreenToScreenGroup(String groupName, String screenId) throws DaoException {
         ScreenGroupEntity entity = screenGroupRepository.findOne(groupName);
+        if (entity == null) {
+            throw new DaoException("Group " + groupName + " doesn't exist");
+        }
 
         // The screen is the "owner" of the relation ship
         ScreenEntity screenEntity = screenRepository.findOne(screenId);
+        if (screenEntity == null) {
+            throw new DaoException("Screen with id  " + screenId + " doesn't exist");
+        }
+
         screenEntity.setScreenGroup(entity);
         screenRepository.save(screenEntity);
     }
 
     @Override
-    public void removeScreenFromScreenGroup(String groupName, String screenId) {
+    public void removeScreenFromScreenGroup(String groupName, String screenId) throws DaoException {
         ScreenGroupEntity entity = screenGroupRepository.findOne(groupName);
+        if (entity == null) {
+            throw new DaoException("Group " + groupName + " doesn't exist");
+        }
 
         // The screen is the "owner" of the relation ship
         ScreenEntity screenEntity = screenRepository.findOne(screenId);
+        if (screenEntity == null) {
+            throw new DaoException("Screen with id  " + screenId + " doesn't exist");
+        }
+
         screenEntity.setScreenGroup(null);
         screenRepository.save(screenEntity);
     }

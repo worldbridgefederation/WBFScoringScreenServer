@@ -9,7 +9,7 @@ public interface ScreenGroupDao {
 
     void createScreenGroup(String groupName);
 
-    void addScreenToScreenGroup(String groupName, String screenId);
+    void addScreenToScreenGroup(String groupName, String screenId) throws DaoException;
 
-    void removeScreenFromScreenGroup(String groupName, String screenId);
+    void removeScreenFromScreenGroup(String groupName, String screenId) throws DaoException;
 }
