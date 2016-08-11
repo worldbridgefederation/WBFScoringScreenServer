@@ -1,11 +1,10 @@
 package org.worldbridge.development.screenserver.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.worldbridge.development.screenserver.CustomDateConverter;
+import org.worldbridge.development.screenserver.rest.support.LastSeenDateSerializer;
 
 import java.util.Date;
 
@@ -14,7 +13,7 @@ import java.util.Date;
 public class DeviceDetails {
     private String deviceId;
     private String ipAddress;
-    @JsonSerialize(using=CustomDateConverter.class)
+    @JsonSerialize(using=LastSeenDateSerializer.class)
     private Date lastSeen;
     private String currentUrl;
     private ScreenDetails screenDetails;

@@ -1,4 +1,4 @@
-package org.worldbridge.development.screenserver;
+package org.worldbridge.development.screenserver.rest.support;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

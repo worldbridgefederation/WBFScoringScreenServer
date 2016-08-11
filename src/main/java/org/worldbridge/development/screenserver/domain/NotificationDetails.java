@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.worldbridge.development.screenserver.NotificationDateDeserializer;
-import org.worldbridge.development.screenserver.NotificationDateSerializer;
+import org.worldbridge.development.screenserver.rest.support.NotificationDateDeserializer;
+import org.worldbridge.development.screenserver.rest.support.NotificationDateSerializer;
 
 import java.util.Date;
 
