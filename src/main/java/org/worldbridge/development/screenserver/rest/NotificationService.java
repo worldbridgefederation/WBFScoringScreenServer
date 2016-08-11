@@ -14,8 +14,12 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class NotificationService {
-    @Autowired
     private NotificationDao notificationDao;
+
+    @Autowired
+    public void setNotificationDao(NotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
+    }
 
     @GET
     public List<NotificationDetails> getNotifications() {
@@ -23,13 +27,21 @@ public class NotificationService {
     }
 
     @PUT
-    public Response addNotification(NotificationDetails notificationDetails) {
+    public void addNotification(NotificationDetails notificationDetails) {
+        if (notificationDetails == null) {
+            throw new BadRequestException("notificationDetails shouldn't be empty");
+        }
+
+        if (notificationDetails.getMessage() == null || notificationDetails.getTitle() == null ||
+                notificationDetails.getValidFrom() == null || notificationDetails.getValidTo() == null ||
+                notificationDetails.getTarget() == null) {
+            throw new BadRequestException("Missing required field");
+        }
 
         try {
             notificationDao.addNotification(notificationDetails);
         } catch (DaoException e) {
-            return Response.serverError().build();
+            throw new BadRequestException(e);
         }
-        return Response.accepted().build();
     }
 }
