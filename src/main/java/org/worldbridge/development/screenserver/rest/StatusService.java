@@ -1,5 +1,6 @@
 package org.worldbridge.development.screenserver.rest;
 
+import org.springframework.beans.factory.parsing.ReaderContext;
 import org.worldbridge.development.screenserver.dao.NotificationDao;
 import org.worldbridge.development.screenserver.dao.ScreensDao;
 import org.worldbridge.development.screenserver.domain.*;
@@ -21,18 +22,25 @@ import java.util.List;
 public class StatusService {
     private Log log = LogFactory.getLog(StatusService.class);
 
-    @Autowired
     private ScreensDao screensDao;
-
-    @Autowired
     private NotificationDao notificationDao;
 
+    @Autowired
+    public void setScreensDao(ScreensDao screensDao) {
+        this.screensDao = screensDao;
+    }
+
+    @Autowired
+    public void setNotificationDao(NotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
+    }
+
     @POST
-    public Response status(@Context HttpServletRequest req, Status status) {
+    public StatusResponse status(@Context HttpServletRequest req, Status status) {
         String remoteAddr = req.getRemoteAddr();
         if (status == null) {
-            log.info("Received update from " + remoteAddr + " with empty status!");
-            return Response.status(500).build();
+            log.error("Received update from " + remoteAddr + " with empty status!");
+            throw new BadRequestException("Status object shouldn't be empty");
         }
 
         log.info("Received update from " + status.getDeviceId() + " at " + remoteAddr);
@@ -68,7 +76,7 @@ public class StatusService {
         } else {
             statusResponse.setShowNotitification(false);
         }
-        return Response.ok(statusResponse).build();
+        return statusResponse;
     }
 
     @GET
@@ -79,6 +87,10 @@ public class StatusService {
     @GET
     @Path("{androidId}")
     public DeviceDetails getScreenByAndroidId(@PathParam("androidId") String androidId) {
-        return screensDao.getScreen(androidId);
+        DeviceDetails device = screensDao.getScreen(androidId);
+        if (device == null) {
+            throw new NotFoundException();
+        }
+        return device;
     }
 }
