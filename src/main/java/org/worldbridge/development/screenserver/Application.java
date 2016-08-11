@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.worldbridge.development.screenserver.hsqldb.HyperSqlDbServer;
 import org.worldbridge.development.screenserver.rest.CrashService;
+import org.worldbridge.development.screenserver.rest.NotificationService;
 import org.worldbridge.development.screenserver.rest.ScreenGroupService;
 import org.worldbridge.development.screenserver.rest.StatusService;
 import org.apache.cxf.Bus;
@@ -51,12 +52,18 @@ public class Application {
     }
 
     @Bean
+    public NotificationService notificationService() {
+        return new NotificationService();
+    }
+
+    @Bean
     public Server rsServer() {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(springBus());
         endpoint.setAddress("/");
 
-        endpoint.setServiceBeans(Arrays.asList(statusService(), screenGroupService(), new CrashService()));
+        endpoint.setServiceBeans(Arrays.asList(statusService(), screenGroupService(), notificationService(),
+                new CrashService()));
         endpoint.setProviders(Arrays.asList(new JacksonJsonProvider()));
         return endpoint.create();
     }

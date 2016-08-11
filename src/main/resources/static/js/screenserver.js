@@ -221,4 +221,64 @@ function editEnabled() {
     return $('.global-edit')[0].checked
 }
 
+function loadNotifications() {
+    $.ajax({
+        url: location.origin + "/rest-api/notifications"
+    }).then(function(data, textStatus, jqXHR) {
+        $(".notification-table-container tbody tr:not(:last-child)").remove()
+
+        jQuery.each(data, function(index, value) {
+            $('<tr>')
+                .insertBefore('.notification-table-container .save-form')
+                .append($('<th>')
+                    .attr('scope', 'row')
+                    .text(value.id)
+                )
+                .append($('<td>')
+                    .text(value.valid_from + ' - ' + value.valid_to)
+                )
+                .append($('<td>')
+                    .text(value.target)
+                )
+                .append($('<td>')
+                    .text(value.title)
+                )
+                .append($('<td>')
+                    .text(value.message)
+                )
+        })
+    })
+}
+
+function loadNotificationTargets() {
+    if (typeof location.origin === 'undefined')
+        location.origin = location.protocol + '//' + location.host;
+
+    $.ajax({
+        url: location.origin + "/rest-api/screens"
+    }).then(function(data, textStatus, jqXHR) {
+        jQuery.each(data, function(index, value) {
+            $('.notification-table-container select[name=target]')
+                .append($('<option>')
+                    .attr('value', value.device_id)
+                    .text(value.device_id + ' / ' + value.ip_address)
+                )
+        })
+    })
+
+    $.ajax({
+        url: location.origin + "/rest-api/screengroups"
+    }).then(function(data, textStatus, jqXHR) {
+        jQuery.each(data, function(index, value) {
+            $('.notification-table-container select[name=target]')
+                .append($('<option>')
+                    .attr('value', value.groupNameame)
+                    .text(value.groupName)
+                )
+        })
+    })
+
+    loadNotifications();
+}
+
 
