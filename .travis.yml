@@ -4,5 +4,5 @@ jdk:
 install:
   - ./dnssd_workaround.sh
   - mvn -Ddnssd.library=`pwd`/dns_sd.jar install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-build:
+script:
   - mvn -Ddnssd.library=`pwd`/dns_sd.jar verify
