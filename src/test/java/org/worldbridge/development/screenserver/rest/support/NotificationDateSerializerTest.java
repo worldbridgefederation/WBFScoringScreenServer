@@ -1,14 +1,20 @@
 package org.worldbridge.development.screenserver.rest.support;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 public class NotificationDateSerializerTest {
+    @Before
+    public void setUp() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Amsterdam"));
+    }
     @Test
     public void testSerialize() throws Exception {
         NotificationDateSerializer serializer = new NotificationDateSerializer();

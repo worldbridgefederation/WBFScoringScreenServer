@@ -1,15 +1,22 @@
 package org.worldbridge.development.screenserver.rest.support;
 
 import com.fasterxml.jackson.core.JsonParser;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class NotificationDateDeserializerTest {
+    @Before
+    public void setUp() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Amsterdam"));
+    }
+
     @Test
     public void testDeserialize() throws Exception {
         NotificationDateDeserializer serializer = new NotificationDateDeserializer();
