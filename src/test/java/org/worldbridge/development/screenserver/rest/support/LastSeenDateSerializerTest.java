@@ -24,7 +24,7 @@ public class LastSeenDateSerializerTest {
         JsonGenerator jsonGenerator = mock(JsonGenerator.class);
         serializer.serialize(new Date(timeStamp), jsonGenerator, null);
 
-        verify(jsonGenerator, times(1)).writeString(eq("12 aug 00:07:16,117"));
+        verify(jsonGenerator, times(1)).writeString(eq("12 Aug 00:07:16,117"));
 
     }
 
