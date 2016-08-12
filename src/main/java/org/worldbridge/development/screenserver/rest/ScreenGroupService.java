@@ -5,12 +5,10 @@ import org.worldbridge.development.screenserver.dao.DaoException;
 import org.worldbridge.development.screenserver.dao.ScreenGroupDao;
 import org.worldbridge.development.screenserver.domain.DeviceDetails;
 import org.worldbridge.development.screenserver.domain.ScreenGroup;
-import org.worldbridge.development.screenserver.persistance.ScreenGroupEntity;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.*;
+import java.util.List;
 
 @Path("/screengroups")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,7 +31,7 @@ public class ScreenGroupService {
     public void addScreenGroup(ScreenGroup screenGroup) {
         if (screenGroup == null) {
             throw new BadRequestException();
-        } else if (screenGroup.getDevices().size() != 0) {
+        } else if (screenGroup.getDevices() != null && !screenGroup.getDevices().isEmpty()) {
             throw new BadRequestException("Adding a group with devices is not yet supported");
         }
 

@@ -68,6 +68,16 @@ public class ScreenGroupServiceTest {
     }
 
     @Test
+    public void testAddScreenGroupWithNullDevices() {
+        ScreenGroup screenGroup = getScreenGroup();
+        screenGroup.setDevices(null);
+
+        screenGroupService.addScreenGroup(screenGroup);
+
+        verify(screenGroupDao, times(1)).createScreenGroup(eq(screenGroup.getGroupName()));
+    }
+
+    @Test
     public void testAddDeviceToGroup() throws Exception {
         screenGroupService.addDeviceToGroup("testgroup", getDeviceDetails());
 
