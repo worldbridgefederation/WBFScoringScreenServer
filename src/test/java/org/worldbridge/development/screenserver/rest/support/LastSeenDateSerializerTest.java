@@ -21,7 +21,7 @@ public class LastSeenDateSerializerTest {
     @Test
     public void testSerialize() throws Exception {
         LastSeenDateSerializer serializer = new LastSeenDateSerializer();
-        long timeStamp = 1470953236117l;
+        long timeStamp = 1470953236117L;
 
         JsonGenerator jsonGenerator = mock(JsonGenerator.class);
         serializer.serialize(new Date(timeStamp), jsonGenerator, null);

@@ -20,7 +20,7 @@ public class NotificationDateSerializerTest {
     @Test
     public void testSerialize() throws Exception {
         NotificationDateSerializer serializer = new NotificationDateSerializer();
-        long timeStamp = 1470953236117l;
+        long timeStamp = 1470953236117L;
 
         JsonGenerator jsonGenerator = mock(JsonGenerator.class);
         serializer.serialize(new Date(timeStamp), jsonGenerator, null);

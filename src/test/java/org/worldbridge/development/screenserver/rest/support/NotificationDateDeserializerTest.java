@@ -27,7 +27,7 @@ public class NotificationDateDeserializerTest {
         when(jsonParser.getText()).thenReturn("12-08-2016 00:07");
         Date date = serializer.deserialize(jsonParser, null);
 
-        assertEquals(1470953220000l, date.getTime());
+        assertEquals(1470953220000L, date.getTime());
     }
 
 }
