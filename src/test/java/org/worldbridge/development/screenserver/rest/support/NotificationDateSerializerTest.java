@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static org.mockito.Matchers.eq;
@@ -14,6 +15,7 @@ public class NotificationDateSerializerTest {
     @Before
     public void setUp() {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Amsterdam"));
+        Locale.setDefault(Locale.forLanguageTag("nl_NL"));
     }
     @Test
     public void testSerialize() throws Exception {

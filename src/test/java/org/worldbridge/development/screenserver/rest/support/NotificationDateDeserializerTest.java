@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
@@ -15,6 +16,7 @@ public class NotificationDateDeserializerTest {
     @Before
     public void setUp() {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Amsterdam"));
+        Locale.setDefault(Locale.forLanguageTag("nl_NL"));
     }
 
     @Test
